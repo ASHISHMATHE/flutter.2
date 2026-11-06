@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flutter Practical Lab - Experiments 1 to 5</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1020;color:#edf2ff;font:16px/1.55 Arial,sans-serif}
+header{text-align:center;padding:35px 15px;background:linear-gradient(135deg,#12304c,#172044)}
+h1{margin:0;font-size:clamp(28px,5vw,42px)}header p{color:#c2cce0}
+main{max-width:1050px;margin:auto;padding:18px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}
+button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px;font-weight:bold}
+.tab{background:#1b2944;color:#fff;border:1px solid #385174}.tab.active{background:#69d2ff;color:#071522}
+.panel,.github{display:none;background:#141e33;border:1px solid #30415f;border-radius:14px;padding:20px;margin-bottom:18px}
+.panel.active{display:block}h2{margin-top:0}h3{color:#69d2ff}
+pre{white-space:pre;overflow:auto;background:#070c16;color:#dce9ff;padding:16px;border-radius:10px;font-size:13px}
+.copy{background:#69d2ff;color:#071522;margin:5px 0 10px}.note{background:#1c2b48;padding:12px;border-left:4px solid #69d2ff;border-radius:7px;color:#d2def3}
+.muted{color:#b7c3dc}a{color:#69d2ff}
+.github{display:block}.github ol{padding-left:22px}
+</style></head>
+<body>
+<header><h1>Flutter Practical Lab</h1><p>Experiments 1–5 · Easy code · Simple explanations</p></header>
+<main>
+<nav class="tabs">
+<button class="tab active" onclick="tab(0)">Experiment 1</button><button class="tab" onclick="tab(1)">Experiment 2</button>
+<button class="tab" onclick="tab(2)">Experiment 3</button><button class="tab" onclick="tab(3)">Experiment 4</button>
+<button class="tab" onclick="tab(4)">Experiment 5</button>
+</nav>
+
+<section class="panel active"><h2>Experiment 1 – Widgets and Layouts</h2><p class="muted"><b>Aim:</b> Use Container, Row, Column, Expanded, Card and ListView.</p><button class="copy" onclick="copy('c1',this)">Copy code</button>
+<pre><code id="c1">import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Student Dashboard')),
+        body: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: const Text('Student Profile'),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: const [
+                Icon(Icons.home),
+                Icon(Icons.person),
+                Icon(Icons.settings),
+              ],
+            ),
+            Expanded(
+              child: ListView(
+                children: const [
+                  Card(child: ListTile(title: Text('Flutter'))),
+                  Card(child: ListTile(title: Text('Cloud Computing'))),
+                  Card(child: ListTile(title: Text('Programming'))),
+                  Card(child: ListTile(title: Text('AI'))),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre><div class="note"><b>Remember:</b> Container, Row, Column, Expanded, ListView, Card.</div></section>
+
+<section class="panel"><h2>Experiment 2 – Responsive UI Design</h2><p class="muted"><b>Aim:</b> Make the layout change according to screen width using LayoutBuilder.</p><button class="copy" onclick="copy('c2',this)">Copy code</button>
+<pre><code id="c2">import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(home: ResponsivePage());
+  }
+}
+
+class ResponsivePage extends StatelessWidget {
+  const ResponsivePage({super.key});
+
+  Widget myCard(String name) {
+    return Card(
+      child: ListTile(
+        leading: const Icon(Icons.school),
+        title: Text(name),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Responsive Dashboard')),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 600) {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  myCard('Student'),
+                  myCard('Courses'),
+                  myCard('Attendance'),
+                  myCard('Results'),
+                ],
+              ),
+            );
+          } else {
+            return Column(
+              children: [
+                Row(children: [
+                  Expanded(child: myCard('Student')),
+                  Expanded(child: myCard('Courses')),
+                ]),
+                Row(children: [
+                  Expanded(child: myCard('Attendance')),
+                  Expanded(child: myCard('Results')),
+                ]),
+              ],
+            );
+          }
+        },
+      ),
+    );
+  }
+}</code></pre><div class="note"><b>Remember:</b> Mobile = Column. Wide screen = Row + Expanded. LayoutBuilder checks screen width.</div></section>
+
+<section class="panel"><h2>Experiment 3 – Input and Forms</h2><p class="muted"><b>Aim:</b> Create a simple student form for name and email.</p><button class="copy" onclick="copy('c3',this)">Copy code</button>
+<pre><code id="c3">import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(home: MyApp()));
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Student Form')),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            TextField(
+              decoration: InputDecoration(labelText: 'Name'),
+            ),
+            TextField(
+              decoration: InputDecoration(labelText: 'Email'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                print('Form Submitted');
+              },
+              child: Text('Submit'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre><div class="note"><b>Remember:</b> TextField + TextField + ElevatedButton. TextField accepts input; onPressed runs when tapped.</div><p class="muted">This is the simplified input version; it does not include Form validation.</p></section>
+
+<section class="panel"><h2>Experiment 4 – Assets and Media</h2><p class="muted"><b>Aim:</b> Display images from the assets folder.</p><button class="copy" onclick="copy('c4',this)">Copy code</button>
+<pre><code id="c4">import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Media Gallery')),
+        body: GridView.count(
+          crossAxisCount: 2,
+          children: [
+            Image.asset('assets/images/flutter.png'),
+            Image.asset('assets/images/flutter.png'),
+            Image.asset('assets/images/flutter.png'),
+            Image.asset('assets/images/flutter.png'),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre><h3>Folder structure</h3><pre>assets/
+  images/
+    flutter.png
+lib/
+  main.dart
+pubspec.yaml</pre><h3>In pubspec.yaml, under flutter:</h3><pre>flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/</pre><div class="note"><b>Remember:</b> GridView.count makes a grid. Image.asset loads an image. Run <b>flutter pub get</b> after editing pubspec.yaml.</div></section>
+
+<section class="panel"><h2>Experiment 5 – Navigation and Routing</h2><p class="muted"><b>Aim:</b> Move between two screens using Navigator.</p><button class="copy" onclick="copy('c5',this)">Copy code</button>
+<pre><code id="c5">import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(home: HomePage()));
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Home')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SecondPage(),
+              ),
+            );
+          },
+          child: Text('Go to Second Page'),
+        ),
+      ),
+    );
+  }
+}
+
+class SecondPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Second Page')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Go Back'),
+        ),
+      ),
+    );
+  }
+}</code></pre><div class="note"><b>Remember:</b> Navigator.push() = open next screen. Navigator.pop() = go back.</div></section>
+
+<section class="github"><h2>Publish the website with GitHub Pages</h2>
+<ol>
+<li>Download this HTML file and rename it to <b>index.html</b>.</li>
+<li>Sign in at <a href="https://github.com/" target="_blank">github.com</a>.</li>
+<li>Create a new repository named <b>Flutter</b> and set it to <b>Public</b>.</li>
+<li>Open the repository → <b>Add file</b> → <b>Upload files</b>.</li>
+<li>Upload <b>index.html</b>, then click <b>Commit changes</b>.</li>
+<li>Go to <b>Settings → Pages</b>.</li>
+<li>Under Build and deployment, select <b>Deploy from a branch</b>.</li>
+<li>Choose branch <b>main</b> and folder <b>/(root)</b>, then click <b>Save</b>.</li>
+<li>After publishing, the address will look like <b>https://YOUR-USERNAME.github.io/Flutter/</b>.</li>
+</ol>
+<div class="note">Already have the Flutter repository? Upload this new file as index.html and replace the old one. Keep your existing Pages settings; your site address should stay the same.</div>
+<p><b>To update later:</b> Upload the updated index.html, replace the old file, and commit the changes.</p>
+</section>
+</main>
+<script>
+function tab(n){document.querySelectorAll('.tab').forEach((e,i)=>e.classList.toggle('active',i===n));document.querySelectorAll('.panel').forEach((e,i)=>e.classList.toggle('active',i===n))}
+async function copy(id,b){let t=document.getElementById(id).innerText;try{await navigator.clipboard.writeText(t);b.innerText='Copied!';setTimeout(()=>b.innerText='Copy code',1300)}catch(e){b.innerText='Copy unavailable - select code manually'}}
+</script></body></html>
